@@ -3,14 +3,9 @@
  */
 
 import { AppRegistry } from 'react-native';
-import Routes from './Routes';
-import { name as appName } from './app.json';
-import { Box, NativeBaseProvider, extendTheme } from 'native-base';
-import AppContext from './App/Context';
-import { useState } from 'react';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 
-function App(): JSX.Element {
-  const [notes, setNotes] = useState([])
+function Theme({ children }): JSX.Element {
   const theme = extendTheme({
     colors: {
       primary: {
@@ -35,11 +30,9 @@ function App(): JSX.Element {
   });
 
   return (<NativeBaseProvider theme={theme}>
-      <AppContext.Provider value={{ notes, setNotes }}>
-        <Routes />
-      </AppContext.Provider>
+    {children}
   </NativeBaseProvider>
   );
 }
 
-AppRegistry.registerComponent(appName, () => App);
+export default Theme
