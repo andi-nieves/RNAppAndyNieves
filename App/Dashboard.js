@@ -2,9 +2,11 @@ import React from "react";
 import { TouchableOpacity } from 'react-native'
 import { useSelector } from "react-redux";
 import { View, Text, Button, Heading, ScrollView } from "native-base";
+import { getNotesState } from "../Redux/notesSlice";
 
 function Dashboard({ navigation }) {
-    const { notes } = useSelector((state) => state)
+    const notes = useSelector((state) => getNotesState(state))
+    
     return <View w="100%" style={{ height: "100%" }} bgColor={"gray.900"} padding="5">
         <Heading size="lg" fontWeight="600" mb="3" color="coolGray.800" _dark={{
             color: "warmGray.50"

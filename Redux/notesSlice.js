@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 const initialState = {
   notes: [],
@@ -26,5 +26,10 @@ export const notesSlice = createSlice({
 })
 
 export const { add, remove } = notesSlice.actions
+
+export const getNotesState = createSelector(
+  (state) => state,
+  ({notes}) => notes 
+);
 
 export default notesSlice.reducer
