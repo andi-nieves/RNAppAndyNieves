@@ -1,16 +1,13 @@
-/**
- * @format
- */
-
 import { AppRegistry } from 'react-native';
-import Routes from './Routes';
+
 import { name as appName } from './app.json';
-import { Box, NativeBaseProvider, extendTheme } from 'native-base';
-import AppContext from './App/Context';
-import { useState } from 'react';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./Redux/store";
+import Routes from './Routes';
 
 function App(): JSX.Element {
-  const [notes, setNotes] = useState([])
   const theme = extendTheme({
     colors: {
       primary: {
@@ -34,11 +31,13 @@ function App(): JSX.Element {
     },
   });
 
-  return (<NativeBaseProvider theme={theme}>
-      <AppContext.Provider value={{ notes, setNotes }}>
+  return (<Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <NativeBaseProvider theme={theme}>
         <Routes />
-      </AppContext.Provider>
-  </NativeBaseProvider>
+      </NativeBaseProvider>
+    </PersistGate>
+  </Provider>
   );
 }
 
