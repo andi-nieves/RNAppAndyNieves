@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  notes: []
+  notes: [],
+  counter: 0
 }
 
 export const notesSlice = createSlice({
@@ -9,20 +10,21 @@ export const notesSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.notes.push(action.payload)
+      if (!action.payload.id) {
+        const count = state.counter + 1
+        state.notes.push({...action.payload, id: count })
+        state.counter = count
+        return
+      }
+      const index = state.notes.findIndex(item => item.id === action.payload.id)
+      state.notes[index] = action.payload
     },
     remove: (state, action) => {
-      
+      state.notes = state.notes.filter(item => item.id !== action.payload.id)
     },
-
   },
 })
 
-// Action creators are generated for each case reducer function
 export const { add, remove } = notesSlice.actions
 
 export default notesSlice.reducer

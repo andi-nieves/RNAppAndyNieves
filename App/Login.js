@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Center, Box, Heading, VStack, FormControl, Input, Link, Button, AlertDialog, Text } from 'native-base'
 import { Formik } from 'formik';
 import ReactNativeBiometrics from 'react-native-biometrics'
@@ -7,24 +7,27 @@ import ReactNativeBiometrics from 'react-native-biometrics'
 function Login({ navigation }) {
     const [showAlert, setShowAlert] = useState(false)
 
-    useEffect(async () => {
-        rnBiometrics.simplePrompt({
-            promptMessage: 'Login with your Biometrics', 
-            cancelButtonText: 'Use Username & Password'})
-        .then((resultObject) => {
-          const { success } = resultObject
-      
-          if (success) {
-            navigation.replace('Dashboard')
-          } 
-        })
-        .catch(() => {
-          console.log('biometrics failed')
-        })
-    }, [])
-
     const onClose = useCallback(() => {
         setShowAlert(false)
+    }, [])
+
+    useEffect(() => {
+        async function biometric() {
+            rnBiometrics.simplePrompt({
+                promptMessage: 'Login with your Biometrics', 
+                cancelButtonText: 'Use Username & Password'})
+            .then((resultObject) => {
+              const { success } = resultObject
+          
+              if (success) {
+                navigation.replace('Dashboard')
+              } 
+            })
+            .catch(() => {
+              console.log('biometrics failed')
+            })
+        }
+        biometric()
     }, [])
 
     return <Center w="100%" style={{ height: "100%" }} bgColor={"gray.900"}>
